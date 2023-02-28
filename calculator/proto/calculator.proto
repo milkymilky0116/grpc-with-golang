@@ -1,0 +1,24 @@
+syntax = "proto3";
+option go_package = "github.com/MangoSteen0903/go-grpc-tour/calculator/proto";
+package calculator;
+
+service Calculator {
+  rpc Add(AddInput) returns (Result);
+  rpc Prime(PrimeInput) returns (stream PrimeResult);
+  rpc Average(stream AvgInput) returns (AvgResult);
+  rpc Max(stream MaxInput) returns (stream MaxResult);
+}
+
+message AddInput {
+  uint32 a = 1;
+  uint32 b = 2;
+}
+
+message PrimeInput { uint32 input = 1; }
+message AvgInput { uint32 input = 1; }
+message MaxInput { uint32 input = 1; }
+
+message Result { uint32 result = 1; }
+message PrimeResult { uint32 result = 1; }
+message AvgResult { float result = 1; }
+message MaxResult { uint32 result = 1; }
