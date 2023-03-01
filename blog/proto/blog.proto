@@ -1,0 +1,23 @@
+syntax = "proto3";
+option go_package = "github.com/MangoSteen0903/go-grpc-tour/blog/proto";
+package blog;
+import "google/protobuf/empty.proto";
+
+service Blog {
+  rpc CreateBlog(Post) returns (PostId);
+  rpc ReadBlog(PostId) returns (Post);
+  rpc UpdateBlog(Post) returns (Status);
+  rpc DeleteBlog(PostId) returns (Status);
+  rpc ListBlog(google.protobuf.Empty) returns (stream Post);
+}
+
+message Post {
+  string id = 1;
+  string user_id = 2;
+  string title = 3;
+  string content = 4;
+}
+
+message Status { bool ok = 1; }
+
+message PostId { string id = 1; }

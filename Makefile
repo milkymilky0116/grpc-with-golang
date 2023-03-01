@@ -1,0 +1,1 @@
+protoc --go_out=./blog/service --go_opt=paths=source_relative --go-grpc_out=./blog/service --go-grpc_opt=paths=source_relative -I ./blog/proto ./blog/proto/blog.proto

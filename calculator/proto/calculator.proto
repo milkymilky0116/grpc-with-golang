@@ -7,6 +7,7 @@ service Calculator {
   rpc Prime(PrimeInput) returns (stream PrimeResult);
   rpc Average(stream AvgInput) returns (AvgResult);
   rpc Max(stream MaxInput) returns (stream MaxResult);
+  rpc Sqrt(SqrtInput) returns (SqrtOutput);
 }
 
 message AddInput {
@@ -17,8 +18,10 @@ message AddInput {
 message PrimeInput { uint32 input = 1; }
 message AvgInput { uint32 input = 1; }
 message MaxInput { uint32 input = 1; }
+message SqrtInput { int32 input = 1; }
 
 message Result { uint32 result = 1; }
 message PrimeResult { uint32 result = 1; }
 message AvgResult { float result = 1; }
 message MaxResult { uint32 result = 1; }
+message SqrtOutput { float result = 1; }

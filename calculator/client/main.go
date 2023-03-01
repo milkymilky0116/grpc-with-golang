@@ -32,6 +32,14 @@ func main() {
 
 	//methods.ExecuteAvg(c)
 
-	methods.ExecuteMax(c)
+	//methods.ExecuteMax(c)
+
+	sqrtResult, err := methods.ExecuteSqrt(c, 10)
+
+	if err != nil {
+		log.Println("Error Occured")
+	} else {
+		log.Printf("Server: Sqrt Result : %f", sqrtResult)
+	}
 
 }
