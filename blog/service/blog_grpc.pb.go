@@ -23,11 +23,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BlogClient interface {
-	CreateBlog(ctx context.Context, in *Post, opts ...grpc.CallOption) (*PostId, error)
-	ReadBlog(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Post, error)
-	UpdateBlog(ctx context.Context, in *Post, opts ...grpc.CallOption) (*Status, error)
-	DeleteBlog(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Status, error)
-	ListBlog(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (Blog_ListBlogClient, error)
+	CreatePost(ctx context.Context, in *Post, opts ...grpc.CallOption) (*PostId, error)
+	ReadPost(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Post, error)
+	UpdatePost(ctx context.Context, in *Post, opts ...grpc.CallOption) (*Status, error)
+	DeletePost(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Status, error)
+	ListPost(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (Blog_ListPostClient, error)
 }
 
 type blogClient struct {
@@ -38,48 +38,48 @@ func NewBlogClient(cc grpc.ClientConnInterface) BlogClient {
 	return &blogClient{cc}
 }
 
-func (c *blogClient) CreateBlog(ctx context.Context, in *Post, opts ...grpc.CallOption) (*PostId, error) {
+func (c *blogClient) CreatePost(ctx context.Context, in *Post, opts ...grpc.CallOption) (*PostId, error) {
 	out := new(PostId)
-	err := c.cc.Invoke(ctx, "/blog.Blog/CreateBlog", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/blog.Blog/CreatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogClient) ReadBlog(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Post, error) {
+func (c *blogClient) ReadPost(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Post, error) {
 	out := new(Post)
-	err := c.cc.Invoke(ctx, "/blog.Blog/ReadBlog", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/blog.Blog/ReadPost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogClient) UpdateBlog(ctx context.Context, in *Post, opts ...grpc.CallOption) (*Status, error) {
+func (c *blogClient) UpdatePost(ctx context.Context, in *Post, opts ...grpc.CallOption) (*Status, error) {
 	out := new(Status)
-	err := c.cc.Invoke(ctx, "/blog.Blog/UpdateBlog", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/blog.Blog/UpdatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogClient) DeleteBlog(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Status, error) {
+func (c *blogClient) DeletePost(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Status, error) {
 	out := new(Status)
-	err := c.cc.Invoke(ctx, "/blog.Blog/DeleteBlog", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/blog.Blog/DeletePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *blogClient) ListBlog(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (Blog_ListBlogClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Blog_ServiceDesc.Streams[0], "/blog.Blog/ListBlog", opts...)
+func (c *blogClient) ListPost(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (Blog_ListPostClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Blog_ServiceDesc.Streams[0], "/blog.Blog/ListPost", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &blogListBlogClient{stream}
+	x := &blogListPostClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -89,16 +89,16 @@ func (c *blogClient) ListBlog(ctx context.Context, in *emptypb.Empty, opts ...gr
 	return x, nil
 }
 
-type Blog_ListBlogClient interface {
+type Blog_ListPostClient interface {
 	Recv() (*Post, error)
 	grpc.ClientStream
 }
 
-type blogListBlogClient struct {
+type blogListPostClient struct {
 	grpc.ClientStream
 }
 
-func (x *blogListBlogClient) Recv() (*Post, error) {
+func (x *blogListPostClient) Recv() (*Post, error) {
 	m := new(Post)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -110,11 +110,11 @@ func (x *blogListBlogClient) Recv() (*Post, error) {
 // All implementations must embed UnimplementedBlogServer
 // for forward compatibility
 type BlogServer interface {
-	CreateBlog(context.Context, *Post) (*PostId, error)
-	ReadBlog(context.Context, *PostId) (*Post, error)
-	UpdateBlog(context.Context, *Post) (*Status, error)
-	DeleteBlog(context.Context, *PostId) (*Status, error)
-	ListBlog(*emptypb.Empty, Blog_ListBlogServer) error
+	CreatePost(context.Context, *Post) (*PostId, error)
+	ReadPost(context.Context, *PostId) (*Post, error)
+	UpdatePost(context.Context, *Post) (*Status, error)
+	DeletePost(context.Context, *PostId) (*Status, error)
+	ListPost(*emptypb.Empty, Blog_ListPostServer) error
 	mustEmbedUnimplementedBlogServer()
 }
 
@@ -122,20 +122,20 @@ type BlogServer interface {
 type UnimplementedBlogServer struct {
 }
 
-func (UnimplementedBlogServer) CreateBlog(context.Context, *Post) (*PostId, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateBlog not implemented")
+func (UnimplementedBlogServer) CreatePost(context.Context, *Post) (*PostId, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
 }
-func (UnimplementedBlogServer) ReadBlog(context.Context, *PostId) (*Post, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReadBlog not implemented")
+func (UnimplementedBlogServer) ReadPost(context.Context, *PostId) (*Post, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadPost not implemented")
 }
-func (UnimplementedBlogServer) UpdateBlog(context.Context, *Post) (*Status, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateBlog not implemented")
+func (UnimplementedBlogServer) UpdatePost(context.Context, *Post) (*Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePost not implemented")
 }
-func (UnimplementedBlogServer) DeleteBlog(context.Context, *PostId) (*Status, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteBlog not implemented")
+func (UnimplementedBlogServer) DeletePost(context.Context, *PostId) (*Status, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePost not implemented")
 }
-func (UnimplementedBlogServer) ListBlog(*emptypb.Empty, Blog_ListBlogServer) error {
-	return status.Errorf(codes.Unimplemented, "method ListBlog not implemented")
+func (UnimplementedBlogServer) ListPost(*emptypb.Empty, Blog_ListPostServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListPost not implemented")
 }
 func (UnimplementedBlogServer) mustEmbedUnimplementedBlogServer() {}
 
@@ -150,96 +150,96 @@ func RegisterBlogServer(s grpc.ServiceRegistrar, srv BlogServer) {
 	s.RegisterService(&Blog_ServiceDesc, srv)
 }
 
-func _Blog_CreateBlog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_CreatePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Post)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServer).CreateBlog(ctx, in)
+		return srv.(BlogServer).CreatePost(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/blog.Blog/CreateBlog",
+		FullMethod: "/blog.Blog/CreatePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServer).CreateBlog(ctx, req.(*Post))
+		return srv.(BlogServer).CreatePost(ctx, req.(*Post))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Blog_ReadBlog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_ReadPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PostId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServer).ReadBlog(ctx, in)
+		return srv.(BlogServer).ReadPost(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/blog.Blog/ReadBlog",
+		FullMethod: "/blog.Blog/ReadPost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServer).ReadBlog(ctx, req.(*PostId))
+		return srv.(BlogServer).ReadPost(ctx, req.(*PostId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Blog_UpdateBlog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_UpdatePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Post)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServer).UpdateBlog(ctx, in)
+		return srv.(BlogServer).UpdatePost(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/blog.Blog/UpdateBlog",
+		FullMethod: "/blog.Blog/UpdatePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServer).UpdateBlog(ctx, req.(*Post))
+		return srv.(BlogServer).UpdatePost(ctx, req.(*Post))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Blog_DeleteBlog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Blog_DeletePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PostId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BlogServer).DeleteBlog(ctx, in)
+		return srv.(BlogServer).DeletePost(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/blog.Blog/DeleteBlog",
+		FullMethod: "/blog.Blog/DeletePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BlogServer).DeleteBlog(ctx, req.(*PostId))
+		return srv.(BlogServer).DeletePost(ctx, req.(*PostId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Blog_ListBlog_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _Blog_ListPost_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(emptypb.Empty)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(BlogServer).ListBlog(m, &blogListBlogServer{stream})
+	return srv.(BlogServer).ListPost(m, &blogListPostServer{stream})
 }
 
-type Blog_ListBlogServer interface {
+type Blog_ListPostServer interface {
 	Send(*Post) error
 	grpc.ServerStream
 }
 
-type blogListBlogServer struct {
+type blogListPostServer struct {
 	grpc.ServerStream
 }
 
-func (x *blogListBlogServer) Send(m *Post) error {
+func (x *blogListPostServer) Send(m *Post) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -251,26 +251,26 @@ var Blog_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*BlogServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateBlog",
-			Handler:    _Blog_CreateBlog_Handler,
+			MethodName: "CreatePost",
+			Handler:    _Blog_CreatePost_Handler,
 		},
 		{
-			MethodName: "ReadBlog",
-			Handler:    _Blog_ReadBlog_Handler,
+			MethodName: "ReadPost",
+			Handler:    _Blog_ReadPost_Handler,
 		},
 		{
-			MethodName: "UpdateBlog",
-			Handler:    _Blog_UpdateBlog_Handler,
+			MethodName: "UpdatePost",
+			Handler:    _Blog_UpdatePost_Handler,
 		},
 		{
-			MethodName: "DeleteBlog",
-			Handler:    _Blog_DeleteBlog_Handler,
+			MethodName: "DeletePost",
+			Handler:    _Blog_DeletePost_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "ListBlog",
-			Handler:       _Blog_ListBlog_Handler,
+			StreamName:    "ListPost",
+			Handler:       _Blog_ListPost_Handler,
 			ServerStreams: true,
 		},
 	},

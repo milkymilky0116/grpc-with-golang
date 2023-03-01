@@ -4,11 +4,11 @@ package blog;
 import "google/protobuf/empty.proto";
 
 service Blog {
-  rpc CreateBlog(Post) returns (PostId);
-  rpc ReadBlog(PostId) returns (Post);
-  rpc UpdateBlog(Post) returns (Status);
-  rpc DeleteBlog(PostId) returns (Status);
-  rpc ListBlog(google.protobuf.Empty) returns (stream Post);
+  rpc CreatePost(Post) returns (PostId);
+  rpc ReadPost(PostId) returns (Post);
+  rpc UpdatePost(Post) returns (Status);
+  rpc DeletePost(PostId) returns (Status);
+  rpc ListPost(google.protobuf.Empty) returns (stream Post);
 }
 
 message Post {
